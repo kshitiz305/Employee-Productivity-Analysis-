@@ -1,0 +1,149 @@
+.body
+{
+   font-family: Tahoma,"Helvetica Neue",sans-serif !important;
+}
+
+.nav_bar_color
+{
+     background-color: #000000 !important;
+}
+.nav_links_color
+{
+     color: white !important;
+}
+.active_nav_links_color, .nav_links_color:hover
+{
+     color: #228B22 !important;
+}
+.cards_header_color
+{
+     background-color: #000000 !important;
+}
+.black_color
+{
+     background-color: #000000 !important;
+}
+.button {
+    position: absolute;
+    top: 50%;
+}
+.active_btn-primary {
+    color: #fff !important;
+    background-color: #6c757d !important;
+    border-color: #6c757d !important;
+}
+.course_button_border
+{
+    border-color: white !important;
+}
+.fullTabColor
+{
+     background-color: #000000 !important;
+}
+.active_fullTabColor, .fullTabColor:hover
+{
+     background-color: #228B22 !important;
+}
+* {box-sizing: border-box}
+
+/* Set height of body and the document to 100% */
+body, html {
+    height: 100%;
+    margin: 0;
+    font-family: Arial;
+}
+
+/* Style tab links */
+.tablink {
+    background-color: #555;
+    color: white;
+    float: left;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    font-size: 17px;
+    width: 25%;
+}
+
+.tablink:hover {
+    background-color: #777;
+}
+
+/* Style the tab content (and add height:100% for full page content) */
+.tabcontent {
+    color: white;
+    display: none;
+    padding: 100px 20px;
+    height: 100%;
+}
+.getTrained {
+    /* The image used */
+    background-image: url("src/images/get_trained.png");
+
+    /* Full height */
+    height: 80%;
+    overflow: hidden;
+    /*max-width: 100%*/ 
+
+    /* Center and scale the image nicely */
+    /*background-position: center;*/
+    /*background-repeat: no-repeat;*/
+    background-size: cover;
+}
+.contribute {
+    /* The image used */
+    background-image: url("src/images/contribute.png");
+
+    /* Full height */
+    height: 80%;
+    overflow: hidden;
+    /*max-width: 100%*/ 
+
+    /* Center and scale the image nicely */
+    /*background-position: center;*/
+    /*background-repeat: no-repeat;*/
+    background-size: cover;
+}
+.about {
+    /* The image used */
+    background-image: url("src/images/download.jpg");
+
+    /* Full height */
+    height: 80%;
+    overflow: hidden;
+    /*max-width: 100%*/ 
+
+    /* Center and scale the image nicely */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+.resource {
+    /* The image used */
+    background-image: url("src/images/resource1.png");
+
+    /* Full height */
+    height: 80%;
+    overflow: hidden;
+    /*max-width: 100%*/ 
+
+    /* Center and scale the image nicely 
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;*/
+}
+.card {
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    width: 25%;
+}
+.card:hover {
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+}
+
+.container_card_course {
+    padding: 2px 16px;
+}
+
+

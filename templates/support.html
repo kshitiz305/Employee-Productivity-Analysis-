@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>Smart Time-Leakage Reporter</title>
+  <meta name="description" content="Description of your site goes here">
+  <!--Import stylesheet-->
+  <link rel="stylesheet" type="text/css" href={{ url_for('static', filename= './css/bootstrap.min.css') }}>
+
+  <link rel="stylesheet" type="text/css" href={{ url_for('static', filename= './css/style_report.css') }}>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+
+
+
+
+</head>
+<style>
+    .getTrained {
+    background-image: url("{{ url_for('static', filename='./images/support.png')}}");
+    background-size: cover;
+    position: relative;
+    height: 100%;
+    overflow: -moz-hidden-unscrollable;
+    text-align: center;
+    justify-content: center;
+}
+
+table {
+  border-collapse: collapse;
+}
+
+td {
+  text-align: center;
+  padding: 8px;
+}
+
+th {
+  text-align: center;
+  padding: 8px;
+}
+</style>
+
+<body>
+
+  <!--Navbar component-->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark nav_bar_color navbar-fixed-top position-fixed w-100"
+    style="padding-left:0.5%; padding-right:5%; z-index:2000;font-family: Tahoma,'Helvetica Neue',sans-serif">
+    <a class="navbar-brand" href="/home"><img src={{ url_for('static', filename='./images/stiler_text.png')}} alt="#"
+        border="0" width="93" height="60" style="opacity: .80;" /></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse flex-row-reverse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item active">
+          <a class="nav-link nav_links_color" href="/home">Home <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link nav_links_color" href="/support" onclick="openNavContact()">Support</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link nav_links_color" href="#" onclick="openNavAbout()">About Us</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <div id="Train" class="getTrained" style="font-family: Tahoma,'Helvetica Neue',sans-serif;color: white;">
+      <br><br><br><br><br><br><br><br>
+      <table style="margin-left:auto;margin-right:auto;">
+          <tr>
+              <th><h1>Contact Us</h1></th>
+          </tr>
+          <tr>
+              <td><a href="mailto:prbandyopadhyay@deloitte.com" >Pritam Bandyopadhyay</a></td>
+          </tr>
+          <tr>
+              <td><a href="mailto:kasaiteja@deloitte.com" >Kadiri Aravind Sai Teja</a></td>
+          </tr>
+          <tr>
+              <td><a href="mailto:abhisengupta@deloitte.com" >Abhishek Sengupta</a></td>
+          </tr>
+          <tr>
+              <td><a href="mailto:sncv@deloitte.com" >Sneha C V</a></td>
+          </tr>
+      </table>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer black_color w-100" style="padding:2%">
+    <div class="container text-center" style="font-family: Tahoma,'Helvetica Neue',sans-serif">
+      <span class="text-muted">Made by Deloitte USI team &copy; 2020. All rights reserved.</span><br><br>
+      <span class="text-muted">
+        <font size="1">Deloitte refers to one or more of Deloitte Touche Tohmatsu Limited, a UK private company limited
+          by guarantee ("DTTL"), its network of member firms, and their related entities. DTTL and each of its member
+          firms are legally separate and independent entities. DTTL (also referred to as "Deloitte Global") does not
+          provide services to clients. In the United States, Deloitte refers to one or more of the US member firms of
+          DTTL, their related entities that operate using the "Deloitte" name in the United States and their respective
+          affiliates. Certain services may not be available to attest clients under the rules and regulations of public
+          accounting. Please see www.deloitte.com/about to learn more about our global network of member firms.</font>
+      </span>
+    </div>
+  </footer>
+
+</body>
+
+</html>

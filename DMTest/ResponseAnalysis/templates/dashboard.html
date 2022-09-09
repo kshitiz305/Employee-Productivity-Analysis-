@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Language" content="en">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>s.ti.le.r - Dashboard</title>
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no" />
+
+
+    <!-- Disable tap highlight on IE -->
+    <meta name="msapplication-tap-highlight" content="no">
+
+    <link href="{{ url_for('static', filename= './css/stylenav_dash.css') }}" rel="stylesheet">
+
+    <style>
+        .alert-zoom-in-out {
+            position: absolute;
+            top: 30%;
+            left: 35%;
+            z-index: 10;
+            width: 30%;
+            margin: 0 auto;
+            font-size: 16px;
+            height: auto;
+            background-color: rgba(0, 0, 0, 0.8);
+            border: none;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+            border-radius: 5px;
+            color: #9acd66;
+        }
+
+        .alert-zoom-in-out .close {
+            padding-right: 5px;
+        }
+
+        .high-contrast-on,
+        .high-contrast-on a,
+        .high-contrast-on i {
+            background-color: rgb(12, 84, 96);
+            color: rgb(209, 236, 241);
+        }
+    </style>
+
+
+
+
+</head>
+
+<body>
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+
+            <div id="myAlert" class="alert alert-zoom-in-out">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <a href="alert" class="close high-contrast" data-highContrast="alert" aria-label="high contrast mode"><i
+                        class="fa fa-adjust"></i></a>
+                <p><strong>Error: </strong></p>
+                <p>{{message}}</p>
+            </div>
+
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+
+    <div class="tabs-animation">
+        <div class="mb-3 card">
+            <div class="card-header-tab card-header">
+                <div class="card-header-title font-size-lg text-capitalize font-weight-normal">
+                    <i class="header-icon lnr-charts icon-gradient bg-happy-green"> </i>
+                    Deloitte Analytics and Cognitive Compliance
+                    <a style="position: absolute; top: 3px; right: 96px;" href="/reports"><img
+                            src={{ url_for('static', filename='./images/back.png')}} alt="#" border="0" width="34"
+                            height="23" /></a>
+                            
+                    <a style="position: absolute; top: 1px; right: 1px;" href="/home"><img
+                        src={{ url_for('static', filename='./images/stilerlogo_trans.png')}} alt="#" border="0"
+                        width="56" height="30" /></a>
+
+                </div>
+                <!-- <div class="btn-actions-pane-right text-capitalize">
+                                    <button class="btn-wide btn-outline-2x mr-md-2 btn btn-outline-focus btn-sm">View All</button>
+                                </div> -->
+            </div>
+            <form action="UpReport" method="POST" enctype="multipart/form-data">
+
+                <div class="no-gutters row">
+                    <div class="col-sm-6 col-md-4 col-xl-4">
+                        <div class="card no-shadow rm-border bg-transparent widget-chart text-center">
+                            <div class="icon-wrapper ">
+
+                                <img src="{{ url_for('static', filename='./images/tick.png')}}" alt="" width="63"
+                                    height="63">
+                            </div>
+                            <div class="widget-chart-content">
+                                <div class="widget-subheading fsize-1">Compliant</div>
+                                <div id="zero_variance" class="widget-numbers">{{zero_variance}}</div>
+                                <div id="NoVar_Count" class="widget-numbers" style="font-size:20px;">({{NoVar_Count}})</div>
+
+                            </div>
+                        </div>
+                        <div class="divider m-0 d-md-none d-sm-block"></div>
+                    </div>
+                    <div class="col-sm-6 col-md-4 col-xl-4">
+                        <div class="card no-shadow rm-border bg-transparent widget-chart text-center">
+                            <div class="icon-wrapper ">
+
+                                <img src="{{ url_for('static', filename='./images/plus.png')}}" alt="" width="50"
+                                    height="53">
+                            </div>
+                            <div class="widget-chart-content">
+                                <div class="widget-subheading fsize-1">Defaulters (Charged to Wrong Codes) </div>
+                                <div id="positive_variance" class="widget-numbers text-danger">
+                                    <span>{{negative_variance}}</span></div>
+                                <div id="Var_Count" class="widget-numbers text-danger" style="font-size:20px;"><span>({{Var_Count}})</span></div>
+                                <!-- <div class="widget-description opacity-8 text-focus">
+                                                Grow Rate:
+                                                <span class="text-info pl-1">
+                                                    <i class="fa fa-angle-down"></i>
+                                                    <span class="pl-1">14.1%</span>
+                                                </span>
+                                            </div> -->
+                            </div>
+                        </div>
+                        <div class="divider m-0 d-md-none d-sm-block"></div>
+                    </div>
+                    <div class="col-sm-12 col-md-4 col-xl-4">
+                        <div class="card no-shadow rm-border bg-transparent widget-chart text-center">
+                            <div class="icon-wrapper rounded-circle">
+                                <img src="{{ url_for('static', filename='./images/minus.png')}}" alt="" width="55"
+                                    height="55">
+                            </div>
+                            <div class="widget-chart-content">
+                                <div class="widget-subheading fsize-1">No Data Available in DTE</div>
+                                <div id="negative_variance" class="widget-numbers text-danger"><span>{{positive_variance}}</span></div>
+                                <div id="NA_Count" class="widget-numbers text-danger" style="font-size:20px;"><span>({{NA_Count}})</span></div>
+                                <!-- <div class="widget-description text-focus">
+                                                Increased by
+                                                <span class="text-warning pl-1">
+                                                    <i class="fa fa-angle-up"></i>
+                                                    <span class="pl-1">7.35%</span>
+                                                </span>
+                                            </div> -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </form>
+            <div class="text-center d-block p-3 card-footer">
+                <form action="View_Excel_Report" method="POST" enctype="multipart/form-data">
+                    <button href="#" class="btn-pill btn-shadow btn-sm btn btn-primary fsize-2" type="submit"
+                        id="View_Excel_Report">View Complete Report</button>
+                </form>
+                <br><br>
+                <form action="Send_Emails" method="POST" enctype="multipart/form-data">
+                    <button class="btn-pill btn-shadow btn-sm btn btn-primary fsize-2" type="submit">Send
+                        Emails</button>
+                </form>
+            </div>
+        </div>
+
+
+
+        <div class="card mb-3">
+            <div class="card-header-tab card-header">
+                <div class="card-header-title font-size-lg text-capitalize font-weight-normal"><i
+                        class="header-icon mr-3 text-muted opacity-6"> </i>Previous Reports</div>
+            </div>
+            <div class="card-body">
+
+                <table style="width: 100%;" id="example" class="table table-hover fsize-1 table-striped table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Report Name</th>
+                            <th>Generated on</th>
+                            <th>Mail Sent (Yes/No)</th>
+                            <th>Report Action</th>
+
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td id="Report_1">{{Report_1}}</td>
+                            <td id="time_1">{{time_1}}</td>
+                            <td>Yes</td>
+                            <td>
+                                <form action="Directory_file1" method="POST" enctype="multipart/form-data">
+                                    <button class="btn-pill btn-shadow btn-sm btn btn-primary fsize-1" type="submit"
+                                        id="View_Report_1">View</button>
+                                </form>
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td id="Report_2">{{Report_2}}</td>
+                            <td id="time_2">{{time_2}}</td>
+                            <td>Yes</td>
+                            <td>
+                                <form action="Directory_file2" method="POST" enctype="multipart/form-data">
+                                    <button class="btn-pill btn-shadow btn-sm btn btn-primary fsize-1" type="submit"
+                                        id="View_Report_2">View</button>
+                                </form>
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td id="Report_3">{{Report_3}}</td>
+                            <td id="time_3">{{time_3}}</td>
+                            <td>Yes</td>
+                            <td>
+                                <form action="Directory_file3" method="POST" enctype="multipart/form-data">
+                                    <button class="btn-pill btn-shadow btn-sm btn btn-primary fsize-1" type="submit"
+                                        id="View_Report_3">View</button>
+                                </form>
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td id="Report_4">{{Report_4}}</td>
+                            <td id="time_4">{{time_4}}</td>
+                            <td>Yes</td>
+                            <td>
+                                <form action="Directory_file4" method="POST" enctype="multipart/form-data">
+                                    <button class="btn-pill btn-shadow btn-sm btn btn-primary fsize-1" type="submit"
+                                        id="View_Report_4">View</button>
+                                </form>
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td id="Report_5">{{Report_5}}</td>
+                            <td id="time_5">{{time_5}}</td>
+                            <td>Yes</td>
+                            <td>
+                                <form action="Directory_file5" method="POST" enctype="multipart/form-data">
+                                    <button class="btn-pill btn-shadow btn-sm btn btn-primary fsize-1" type="submit"
+                                        id="View_Report_5">View</button>
+                                </form>
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+                </form>
+            </div>
+        </div>
+
+    </div>
+    </div>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+</body>
+
+</html>

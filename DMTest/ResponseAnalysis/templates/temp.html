@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href={{ url_for('static', filename= './css/stylewelcome.css') }}>
+  <link rel="stylesheet" href={{ url_for('static', filename= './css/menu.css') }}>
+  <link rel="stylesheet" href={{ url_for('static', filename= './css/bootstrap.min.css') }}>
+  
+  <title>s.ti.le.r - Smart Time Leakage Reporter</title>
+</head>
+<body>
+  <div class="menu-wrap">
+    <input type="checkbox" class="toggler">
+    <div class="hamburger"><div></div></div>
+    <div class="menu" >
+      <div>
+        <div>
+          <ul>
+            <li><a href="/reports">Reports</a></li>
+            <li><a href="https://dsurvey.deloitte.com" target="_blank">Deloitte Survey Tool</a></li>
+            <li><a href="/settings">Settings</a></li>
+			<li><a href="/trend">Response Analysis</a></li>
+            <li><a href="/support">Support</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+
+  <header class="showcase">
+    <div class="container showcase-inner">
+      <div>
+        <a href=""><img src={{ url_for('static', filename='./images/stiler_text.png')}} alt="#" border="0" height="180" width="350" style="opacity: 0.8"/></a>
+        
+        <a  href="/userguide" style="position:absolute; right: 10px; top: 5px;"><img src="{{ url_for('static', filename='./images/help.png')}}" alt=""  width="60" height="60" ></a>  
+      </div><br><br><br><br><br><br><br><br><br>
+      <div style="background: rgba(24, 39, 51 , 0.55)">
+      <h2>Welcome</h2>
+      <p>STILER assists you in creating a report of practitioners who are currently staffed on
+        a client project but are not charging aptly on DTE. Using the analyzed report,
+        an auto triggered mail is sent to the practitioners informing them about the variance
+        between their STAFFIT & DTE as it affects the overall Utilization</p><br>
+      <a href="#" class="btn-primary">Watch a quick video</a>
+    </div>
+    </div>
+  </header>
+</body>
+<!-- Footer -->
+<div style="background: rgba(5, 5, 5, 0.55)"></div>
+<footer class="footer black_color w-100" style="padding:2%">
+  <div class="container text-center" style="font-family: Tahoma,'Helvetica Neue',sans-serif">
+  <span class="text-muted">Made by Deloitte USI team &copy; 2020. All rights reserved.</span><br><br>
+  <span class="text-muted"><font size="1">Deloitte refers to one or more of Deloitte Touche Tohmatsu Limited, a UK private company limited by guarantee ("DTTL"), its network of member firms, and their related entities. DTTL and each of its member firms are legally separate and independent entities. DTTL (also referred to as "Deloitte Global") does not provide services to clients. In the United States, Deloitte refers to one or more of the US member firms of DTTL, their related entities that operate using the "Deloitte" name in the United States and their respective affiliates. Certain services may not be available to attest clients under the rules and regulations of public accounting. Please see www.deloitte.com/about to learn more about our global network of member firms.</font></span>
+  </div>
+</div>                         
+  </footer>
+</html>

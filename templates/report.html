@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>Smart Time-Leakage Reporter</title>
+  <meta name="description" content="Description of your site goes here">
+  <!--Import stylesheet-->
+  <link rel="stylesheet" type="text/css" href={{ url_for('static', filename= './css/bootstrap.min.css') }}>
+
+  <link rel="stylesheet" type="text/css" href={{ url_for('static', filename= './css/style_report.css') }}>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+
+
+
+
+</head>
+
+<body>
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+  {% for message in messages %}
+        <div id="myAlert" class="alert alert-zoom-in-out">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            <a href="alert" class="close high-contrast" data-highContrast="alert" aria-label="high contrast mode"><i
+                    class="fa fa-adjust"></i></a>
+            <p><strong>Warning: </strong></p>
+            <p>{{message}}</p>
+            <p><strong>Are you Sure?</strong></p>
+            <div class="container_popup flex">
+                <form id="rememail" action="Send_Reminder" method="POST" enctype="multipart/form-data"
+                      style="display:inline-block; margin-right: 30px">
+                    <button style="background-color: #4CAF50; border: 1px solid rgb(111,141,97)" class="p-2 btn btn-primary"
+                            type="submit" id="Send_Reminder">Yes, Send.
+                    </button>
+                </form>
+
+                <form action="Op_Variance_Report" method="POST" enctype="multipart/form-data" style="display:inline-block;">
+                    <button href="#" style="background-color: #4CAF50; border: 1px solid rgb(111,141,97)"
+                            class="p-2 btn btn-primary" type="submit" id="Latest_Report">Open Variance file.
+                    </button>
+                </form>
+            </div>
+        </div>
+
+  {% endfor %}
+{% endif %}
+{% endwith %}
+
+  <!--Navbar component-->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark nav_bar_color navbar-fixed-top position-fixed w-100"
+    style="padding-left:0.5%; padding-right:5%; z-index:2000;font-family: Tahoma,'Helvetica Neue',sans-serif">
+    <a class="navbar-brand" href="/home"><img src={{ url_for('static', filename='./images/stiler_text.png')}} alt="#"
+        border="0" width="93" height="60" style="opacity: .80;" /></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse flex-row-reverse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item active">
+          <a class="nav-link nav_links_color" href="/home">Home <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link nav_links_color" href="/support" onclick="openNavContact()">Support</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link nav_links_color" href="#" onclick="openNavAbout()">About Us</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+  <br><br>
+  <div id="loadbg" style="display:none; class=" loadbg">
+    <div id="loader" style="display:none;"></div>
+  </div>
+
+
+
+  <!--CSS Styling for FullScreen Overlay and FullPageTab-->
+  <style>
+		.flex {
+			display: flex;
+			flex-wrap: wrap;
+			display:inline-block;
+		}
+
+		.grid {
+			display: grid;
+			grid-template-columns: 100px 100px 100px;
+		}
+
+		.container_Report {
+			width: 320px;
+			height: 7em;
+			border: 5px solid rgb(111,41,97);
+			border-radius: .5em;
+			padding: 10px;
+			justify-content: space-between;
+			align-content: space-between;
+			float: right
+		}
+		.container_popup {
+			width: 320px;
+			height: 3em;
+			padding: 0px;
+			justify-content: space-between;
+			align-content: space-between;
+			float: left
+		}
+		
+		.container_DTE {
+			width: 400px;
+			height: 19em;
+			border: 5px solid rgb(111,41,97);
+			border-radius: .5em;
+			padding: 10px;
+			justify-content: space-between;
+			align-content: space-between;
+		
+		}
+  
+  
+  
+    /* load ring style starts here */
+    #loader {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      background: rgba(24, 39, 51, 0.85);
+      z-index: 1;
+      width: 150px;
+      height: 150px;
+      margin: -75px 0 0 -75px;
+      border: 16px solid #f3f3f3;
+      border-radius: 50%;
+      border-top: 16px solid #9acd66;
+      width: 120px;
+      height: 120px;
+      -webkit-animation: spin 2s linear infinite;
+      animation: spin 2s linear infinite;
+    }
+
+    @-webkit-keyframes spin {
+      0% {
+        -webkit-transform: rotate(0deg);
+      }
+
+      100% {
+        -webkit-transform: rotate(360deg);
+      }
+    }
+
+    @keyframes spin {
+      0% {
+        transform: rotate(0deg);
+      }
+
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* Add animation to "page content" */
+    .animate-bottom {
+      position: relative;
+      -webkit-animation-name: animatebottom;
+      -webkit-animation-duration: 1s;
+      animation-name: animatebottom;
+      animation-duration: 1s
+    }
+
+    @-webkit-keyframes animatebottom {
+      from {
+        bottom: -100px;
+        opacity: 0
+      }
+
+      to {
+        bottom: 0px;
+        opacity: 1
+      }
+    }
+
+    @keyframes animatebottom {
+      from {
+        bottom: -100px;
+        opacity: 0
+      }
+
+      to {
+        bottom: 0;
+        opacity: 1
+      }
+    }
+
+    #myDiv {
+      display: none;
+      text-align: center;
+    }
+
+    #loadbg {
+      position: absolute;
+      background: rgba(24, 39, 51, 0.85);
+      width: 100%;
+      height: 100%;
+      align-items: center;
+      justify-content: center;
+      transition: all .4s ease;
+    }
+
+    /* load ring style ends here */
+
+    .alert-zoom-in-out {
+      position: absolute;
+      top: 30%;
+      left: 35%;
+      z-index: 10;
+      width: 30%;
+      margin: 0 auto;
+      font-size: 16px;
+      height: auto;
+      background-color: rgba(0, 0, 0, 0.8);
+      border: none;
+      box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+      border-radius: 5px;
+      color: #9acd66;
+    }
+
+    .alert-zoom-in-out .close {
+      padding-right: 5px;
+    }
+
+    .high-contrast-on,
+    .high-contrast-on a,
+    .high-contrast-on i {
+      background-color: rgb(12, 84, 96);
+      color: rgb(209, 236, 241);
+    }
+
+    .getTrained {
+      /* The image used */
+      background-image: url("{{ url_for('static', filename='./images/get_started.png')}}");
+      margin-left: -3px;
+      height: 100%;
+      overflow: -moz-hidden-unscrollable;
+      background-size: cover;
+    }
+	
+	
+    .overlayfullscreen {
+    height: 0%;
+    width: 100%;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: rgb(0,0,0);
+    background-color: rgba(0,0,0, 0.9);
+    overflow-y: hidden;
+    color: white;
+    display: block;
+    transition: 0.5s;
+}
+.overlayfullscreen-content {
+    position: relative;
+    top: 25%;
+    width: 100%;
+    text-align: center;
+    color: white;
+    margin-top: 30px;
+}
+.overlayfullscreen .closebtn {
+    position: absolute;
+    top: 40px;
+    right: 45px;
+    font-size: 60px;
+}
+
+
+
+
+/* Style for About Us Page */
+h2 {
+            color: white;
+            font-size: 18px;
+        }
+
+        h3 {
+            color: white;
+        }
+
+        .cardholder {
+            padding-bottom: 7%;
+        }
+
+        .cardcolumn {
+            float: left;
+            width: 25%;
+
+        }
+
+        .card {
+            border: 0.5px solid rgba(255, 255, 255, 0.2);
+            background-color: black;
+            border-radius: 15%;
+            padding-right: 10px;
+            margin-bottom: 10px;
+            float: left;
+            width: 90%;
+            box-shadow: 0 4px 8px 0 rgba(255, 255, 255, 0.2);
+        }
+
+        .cardtext {
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 12px;
+            color: teal;
+            padding-top: 10px;
+            padding-left: 10px;
+            text-align: right;
+            float: left;
+            width: 95%;
+        }
+
+        .avatars {
+            padding-top: 5px;
+            padding-left: 10px;
+            border-radius: 50%;
+            width: 25%;
+            float: left;
+        }
+		
+/*  style for about us ends */
+
+		
+		
+		
+		
+		
+  </style>
+
+  <div id="Train" class="getTrained" style="font-family: Tahoma,'Helvetica Neue',sans-serif;color: white;">
+    <div style="margin-left: 10px;"><br><br>
+      <h1>Get Started</h1>
+      <p>Step - 1. Select the DTE Extract. </br>
+        Step - 2. Select the Staffit Extract. </br>
+        Step - 3. Select the year and enter the Week number for which you want the report. </br>
+        Click on Go!
+      </p>
+	 <div class="container_Report flex" >
+		<p>Reminder Mail</p>
+	  <form action="Latest_Report" method="POST" enctype="multipart/form-data" style="display:inline-block;" >
+        <button href="#" class="p-2 btn btn-primary" type="submit" id="Latest_Report">Latest Report</button>
+      </form>
+      <form id="rememail" action="Get_Resp_file" method="POST" enctype="multipart/form-data" style="display:inline-block;" >
+        <button class="p-2 btn btn-primary" type="submit" id="Send_Reminder">Send Reminder mail</button>
+      </form>
+	  </div>
+
+	 <!--br><br-->
+	  <div class="container_DTE">
+	  <p> Generate Report</p>
+	  <div>
+      <form action="UpDTE" method="POST" enctype="multipart/form-data" style="display:inline-block;" >
+        <button class="p-2 btn btn-primary" type="submit" id="DTE">Select the DTE File</button>
+      </form>
+    
+      <form action="UpSTF" method="POST" enctype="multipart/form-data" style="display:inline-block;" >
+        <button class="p-2 btn btn-primary" type="submit" id="Staffit">Select the STAFFIT File</button>
+      </form>
+	  </div>
+
+<!--      <div>-->
+<!--        <form action="reports" method="POST" enctype="multipart/form-data">-->
+<!--          <select id="dropdown" name="dropdown" class="btn btn-primary dropdown-toggle" width="10">-->
+<!--            <option value="" disabled selected>Select Year</option>-->
+<!--&lt;!&ndash;            <option id="year">{{year}}</option>&ndash;&gt;-->
+<!--               {% for y in year %}-->
+<!--                <option id="year">{{y}}</option>-->
+<!--                {% endfor %}-->
+<!--          </select>-->
+<!--        </form>-->
+<!--      </div>-->
+<!--      <br>-->
+      <div>
+          <br>
+        <form id="form" action="UpReport" method="POST" enctype="multipart/form-data">
+          <select id="dropdown" name="dropdown" class="btn btn-primary dropdown-toggle" width="10">
+            <option value="" disabled selected>Select Year</option>
+<!--            <option id="year">{{year}}</option>-->
+               {% for y in year %}
+                <option id="year">{{y}}</option>
+                {% endfor %}
+          </select>
+            <br>
+          <input id="week" name="week" class="form-control" style="width: 160px;" type="text" width="10"
+            placeholder="Enter Week (1-52)" aria-label="Week"> <br>
+          <input id="thresh" name="thresh" class="form-control" style="width: 160px;" type="text" width="10"
+            placeholder="Threshold for Variance" aria-label="thresh">
+          <br>
+
+          <input class="p-2 btn btn-primary" id="submit" value="Go! ->" type="submit">
+
+
+        </form>
+      </div>
+	  </div>	
+
+    </div>
+
+
+    <!-- <a onclick="loadring()" class="p-1 btn btn-primary" width="5%" id="Go"> Go! -> </a> -->
+
+
+  </div>
+  <div id="myNavAbout" class="overlayfullscreen"><br>
+    
+    <a href="javascript:void(0)" class="closebtn" onclick="closeNavAbout()"><span style="font-size:30px">&times;</span></a>
+    <div class="container" style="font-family: Tahoma,'Helvetica Neue',sans-serif"><br><br><br>
+      <div style="text-align: center;font-size: 24px; font-weight: bold;"></div>
+      
+      </div>
+    <div class="cardholder">
+            
+      <div class="cardcolumn">
+          <h2>Program Head</h2>
+          <div class="card">
+              <img class= "avatars" src={{ url_for('static', filename='./images/avatars/va.jpg')}} alt="Avatar">
+              <div class="cardtext">
+                  <strong style="font-size: 15px;">Vivek Agarwal</strong><br>
+                  <a>Senior Manager</a><br>
+                  <a>Analytics and Cognitive</a>
+              </div>
+          </div>
+          <div style="position: absolute; bottom:10px; left: 20px;font-size: 100px;box-shadow: 0 4px 8px 0 rgba(255, 255, 255, 0.2); border-radius: 15%;">
+            Our
+            Team
+          </div>
+      </div>
+  
+              
+      <div class="cardcolumn">
+          <h2>Overall Design & Supervision</h2>
+          <div class="card">
+              <img class= "avatars" src={{ url_for('static', filename='./images/avatars/asri.jpg')}} alt="Avatar">
+              <div class="cardtext">
+                  <strong style="font-size: 15px;">Anuj Srivastava</strong><br>
+                  <a>Senior Consultant</a><br>
+                  <a>Analytics and Cognitive</a>
+              </div>
+          </div>
+      </div>
+      <div class="cardcolumn">
+          <h2>Functional Consultants</h2>
+          <div class="card">
+              <img class= "avatars" src={{ url_for('static', filename='./images/avatars/rk.jpg')}} alt="Avatar">
+              <div class="cardtext">
+                  <strong style="font-size: 15px;">Ryan Karak</strong><br>
+                  <a>Senior Consultant</a><br>
+                  <a>Analytics and Cognitive</a>
+              </div>
+          </div>
+          <div class="card">
+              <img class= "avatars" src={{ url_for('static', filename='./images/avatars/sncv.jpg')}} alt="Avatar">
+              <div class="cardtext">
+                  <strong style="font-size: 15px;">Sneha C V</strong><br>
+                  <a>Business Technology Analyst</a><br>
+                  <a>Analytics and Cognitive</a>
+              </div>
+          </div>
+      </div>
+      <div class="cardcolumn">
+          <h2>Development Team</h2>
+          <div class="card">
+              <img class= "avatars" src={{ url_for('static', filename='./images/avatars/ob.jpg')}} alt="Avatar">
+              <div class="cardtext">
+                  <strong style="font-size: 15px;">Abhishek Sengupta</strong><br>
+                  <a>Consultant</a><br>
+                  <a>Analytics and Cognitive</a>
+              </div>
+          </div>
+          <div class="card">
+              <img class= "avatars" src={{ url_for('static', filename='./images/avatars/ast.jpg')}} alt="Avatar">
+              <div class="cardtext">
+                  <strong style="font-size: 15px;">Aravind Sai Teja</strong><br>
+                  <a>Business Technology Analyst</a><br>
+                  <a>Analytics and Cognitive</a>
+              </div>
+          </div>
+          <div class="card">
+              <img class= "avatars" src={{ url_for('static', filename='./images/avatars/pb.jpg')}} alt="Avatar">
+              <div class="cardtext">
+                  <strong style="font-size: 15px;">Pritam Bandyopadhyay</strong><br>
+                  <a>Business Technology Analyst</a><br>
+                  <a>Analytics and Cognitive</a>
+              </div>
+          </div>
+      </div>
+  </div>
+  </div>
+
+
+ 
+
+  <script type="text/javascript">
+
+  // Script for Full Screen Overlay starts here
+function openNavContact() {
+    document.getElementById("myNavContact").style.height = "100%";
+}
+
+function closeNavContact() {
+    document.getElementById("myNavContact").style.height = "0%";
+}
+  function openNavAbout() {
+    document.getElementById("myNavAbout").style.height = "100%";
+}
+  function closeNavAbout() {
+    document.getElementById("myNavAbout").style.height = "0%";
+}
+
+// Script for loader starts here
+    (function (d) {
+      d.getElementById('form').onsubmit = function () {
+        d.getElementById('submit').style.display = 'none'
+        d.getElementById('loader').style.display = 'block'
+        d.getElementById('loadbg').style.display = 'block';
+      };
+    }(document));
+
+
+    (function (d) {
+      d.getElementById('rememail').onsubmit = function () {
+        d.getElementById('submit').style.display = 'none'
+        d.getElementById('loader').style.display = 'block'
+        d.getElementById('loadbg').style.display = 'block';
+      };
+    }(document));
+
+  </script>
+
+
+
+
+
+  <!-- Footer -->
+  <footer class="footer black_color w-100" style="padding:2%">
+    <div class="container text-center" style="font-family: Tahoma,'Helvetica Neue',sans-serif">
+      <span class="text-muted">Made by Deloitte USI team &copy; 2020. All rights reserved.</span><br><br>
+      <span class="text-muted">
+        <font size="1">Deloitte refers to one or more of Deloitte Touche Tohmatsu Limited, a UK private company limited
+          by guarantee ("DTTL"), its network of member firms, and their related entities. DTTL and each of its member
+          firms are legally separate and independent entities. DTTL (also referred to as "Deloitte Global") does not
+          provide services to clients. In the United States, Deloitte refers to one or more of the US member firms of
+          DTTL, their related entities that operate using the "Deloitte" name in the United States and their respective
+          affiliates. Certain services may not be available to attest clients under the rules and regulations of public
+          accounting. Please see www.deloitte.com/about to learn more about our global network of member firms.</font>
+      </span>
+    </div>
+  </footer>
+
+</body>
+
+</html>

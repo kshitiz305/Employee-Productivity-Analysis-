@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>Smart Time-Leakage Reporter</title>
+  <meta name="description" content="Description of your site goes here">
+  <!--Import stylesheet-->
+  <link rel="stylesheet" type="text/css" href={{ url_for('static', filename= './css/bootstrap.min.css') }}>
+
+  <link rel="stylesheet" type="text/css" href={{ url_for('static', filename= './css/style_report.css') }}>
+  
+  	<title>Bootstrap - Input multiple tags example using Tag Manager Jquery Plugin</title>
+	<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/tagmanager/3.0.2/tagmanager.min.css">
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	<script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src={{ url_for('static', filename= './js/tags.js') }}></script>
+
+
+
+</head>
+
+<body>
+  <!-- Hideen Section for loader -->
+  <!-- <div id="load" class="load">
+
+    <div id="ringload" class="ring"></div>
+    <div id=textload class="ring">
+      processing
+      <l></l>
+    </div>
+
+  </div> -->
+
+  <!--Navbar component-->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark nav_bar_color navbar-fixed-top position-fixed w-100"
+    style="padding-left:0.5%; padding-right:5%; z-index:2000;font-family: Tahoma,'Helvetica Neue',sans-serif">
+    <a class="navbar-brand" href="home"><img
+        src={{ url_for('static', filename='./images/stiler_text.png')}} alt="#" border="0" width="63" height="40"
+        style="opacity: .80;" /></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse flex-row-reverse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item active">
+          <a class="nav-link nav_links_color" href="/home">Home <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link nav_links_color" href="#" onclick="openNavContact()">Support</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link nav_links_color" href="#" onclick="openNavAbout()">About Us</a>
+        </li>
+      </ul>
+    </div>
+	
+  </nav>
+  <br><br><br>
+  <div id="loadbg" style="display:none; class=" loadbg">
+    <div id="loader" style="display:none;"></div>
+  </div>
+
+
+
+  <!--CSS Styling for FullScreen Overlay and FullPageTab-->
+  <style>
+    /* load ring style starts here */
+    #loader {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  background: rgba(24, 39, 51, 0.85);
+  z-index: 1;
+  width: 150px;
+  height: 150px;
+  margin: -75px 0 0 -75px;
+  border: 16px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 16px solid #9acd66;
+  width: 120px;
+  height: 120px;
+  -webkit-animation: spin 2s linear infinite;
+  animation: spin 2s linear infinite;
+}
+
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Add animation to "page content" */
+.animate-bottom {
+  position: relative;
+  -webkit-animation-name: animatebottom;
+  -webkit-animation-duration: 1s;
+  animation-name: animatebottom;
+  animation-duration: 1s
+}
+
+@-webkit-keyframes animatebottom {
+  from { bottom:-100px; opacity:0 }
+  to { bottom:0px; opacity:1 }
+}
+
+@keyframes animatebottom {
+  from{ bottom:-100px; opacity:0 }
+  to{ bottom:0; opacity:1 }
+}
+
+#myDiv {
+  display: none;
+  text-align: center;
+}
+
+#loadbg {
+  position: absolute;
+  background: rgba(24, 39, 51, 0.85);
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  transition: all .4s ease;
+}
+
+    /* load ring style ends here */
+    .getTrained {
+      /* The image used */
+      background-image: url("{{ url_for('static', filename='./images/resource1.png')}}");
+      margin-left: -3px;
+      height: 100%;
+      overflow: -moz-hidden-unscrollable;
+      background-size: cover;
+    }
+  </style>
+  
+  <div id="Train" class="getTrained" style="font-family: Tahoma,'Helvetica Neue',sans-serif;color: white;">
+	<div style="margin-left: 10px;"><br><br><br>
+				<form action="save" method="POST" enctype="multipart/form-data">
+					<div class="form-group">
+						<label style="background-color: rgba(24, 39, 51, 0.35);" >List Of Restricted Codes(To Add a new code just type them in and hit enter)</label>
+						<br/>
+						<input type="text" style="width: 20%;" name="tags" value="" placeholder="Add new codes" class="tm-input form-control tm-input-info"/> 
+					</div>
+				<!--/form-->		
+				<!--form action="save" method="POST" enctype="multipart/form-data"-->
+					<div class="form-group">
+						<button onClick="window.location.reload();" class="btn btn-success" type="submit" id="save">SAVE</button>
+					</div>
+				</form>
+						
+					
+
+				<form action="Staffit_template" method="POST" enctype="multipart/form-data">
+					<button class="p-2 btn btn-primary" type="submit" id="Staffit_template">Download STAFFIT Template</button>
+					<br><br>
+				</form>	
+				<form action="DTE_template" method="POST" enctype="multipart/form-data">
+					<button class="p-2 btn btn-primary" type="submit" id="DTE_template">Download DTE Template</button>
+					<br><br>
+				</form>
+				<form action="Manager_details" method="POST" enctype="multipart/form-data">
+					<button href="#" class="btn-pill btn-shadow btn-sm btn btn-primary" type="submit" id="Manager_details">Update Manager/Counselor details</button>
+					<br><br>
+				</form>	
+				
+		
+	</div>
+  </div>
+  
+  
+    <!--Scripts for loader-->
+
+  <script type="text/javascript">
+   $(".tm-input").tagsManager();
+  </script>
+
+
+
+
+
+  <!-- Footer -->
+  <footer class="footer black_color w-100" style="padding:2%">
+    <div class="container text-center" style="font-family: Tahoma,'Helvetica Neue',sans-serif">
+      <span class="text-muted">Made by Deloitte USI team &copy; 2020. All rights reserved.</span><br><br>
+      <span class="text-muted">
+        <font size="1">Deloitte refers to one or more of Deloitte Touche Tohmatsu Limited, a UK private company limited
+          by guarantee ("DTTL"), its network of member firms, and their related entities. DTTL and each of its member
+          firms are legally separate and independent entities. DTTL (also referred to as "Deloitte Global") does not
+          provide services to clients. In the United States, Deloitte refers to one or more of the US member firms of
+          DTTL, their related entities that operate using the "Deloitte" name in the United States and their respective
+          affiliates. Certain services may not be available to attest clients under the rules and regulations of public
+          accounting. Please see www.deloitte.com/about to learn more about our global network of member firms.</font>
+      </span>
+    </div>
+  </footer>
+
+</body>
+
+</html>
